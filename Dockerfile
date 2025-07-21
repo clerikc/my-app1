@@ -7,16 +7,11 @@ WORKDIR /app
 # Копирование исходного кода
 COPY . .
 
-# Компиляция приложения
-RUN go build -o hello-world
+# Компиляция приложения (без модулей)
+RUN GO111MODULE=off go build -o hello-world
 
 # Финальный образ
 FROM alpine:latest
-
 WORKDIR /app
-
-# Копирование бинарника из builder
 COPY --from=builder /app/hello-world .
-
-# Команда для запуска приложения
 CMD ["./hello-world"]
